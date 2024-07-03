@@ -61,52 +61,7 @@ app.use("/api/renter", rentedInfoRoute);
 app.get("/", (req, res) => {
   return res.status(200).send("<h1>Welcome to node FlexShare</h1>");
 });
-const userSocketMap = {};
-export const getReceiverSocketId = (receiverId) => {
-  return userSocketMap[receiverId];
-};
-io.on("connection", (socket) => {
-  const userId = socket.handshake.query.userId;
-  console.log("USER CONNECTED - " + socket.id);
-  if (userId != "undefined") userSocketMap[userId] = socket.id;
-  socket.on("join_room", (data) => {
-    console.log("USER WITH ID - ", socket.id, "JOIN ROOM - ", data.roomid);
-  });
 
-  // socket.on("send_message", (data) => {
-  //   console.log("MESSAGE RECIEVED - ", data);
-  //   // io.to(data.clientSocketId).emit("receive_message", data.message);
-  //   io.emit("receive_message", data);
-  // });
-  socket.on("message", (data) => {
-    console.log("Received message:", data);
-
-    // Assuming you have access to the recipient's socket ID
-    const receiverSocketId = getReceiverSocketId(data.receiverId);
-    //socket.broadcast.emit("message", data.message);
-    // console.log(receiverSocketId);
-    io.to(receiverSocketId).emit("message", data);
-    // io.to(socket.id).emit("message", data);
-  });
-  socket.on("disconnect", () => {
-    console.log("USER DISCONNECTED - ", socket.id);
-    delete userSocketMap[userId];
-  });
-});
-//port
-// const PORT = process.env.PORT || 8080;
-// const PORT1 = 3001;
-// //listen
-// httpServer.listen(PORT1, () => {
-//   console.log(`Socket IO Server running on ${PORT1} `);
-// });
-
-// app.listen(PORT, () => {
-//   console.log(
-//     `Server Running On PORT ${process.env.PORT} on ${process.env.NODE_ENV} mode`
-//       .bgMagenta.white
-//   );
-// });
 
 const PORT = process.env.PORT || 8080;
 httpServer.listen(PORT, () => {
