@@ -1,5 +1,5 @@
 import express from "express";
-import colors from "colors";
+//import colors from "colors";
 import morgan from "morgan";
 import cors from "cors";
 import { config } from "dotenv";
@@ -110,5 +110,5 @@ io.on("connection", (socket) => {
 
 const PORT = process.env.PORT || 8080;
 httpServer.listen(PORT, () => {
-  console.log(`HTTP Server running on port ${PORT}`.bgMagenta.white);
+  console.log(`HTTP Server running on port ${PORT}`);
 });
